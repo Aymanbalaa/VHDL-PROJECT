@@ -1,42 +1,40 @@
-
-
-# Set the simulation time
 add wave *
-force -freeze max_occupancy 6'b 001000
 
-# Increment count
-force -freeze photocell_in 2'b00
-run
-force -freeze photocell_in 2'b01
-run
-force -freeze photocell_in 2'b01
-run
+-- Reset the system
+force reset 1
+run 2
 
-# Decrement count
-force -freeze photocell_in 2'b10
-run
-force -freeze photocell_in 2'b10
-run
+-- Test scenario 1: Increment occupancy
+force photocell_X 1
+force photocell_Y 0
+force max_occupancy "001100"
+run 2
 
-# Increment count again
-force -freeze photocell_in 2'b01
-run
-force -freeze photocell_in 2'b01
-run
+-- Test scenario 2: Decrement occupancy
+force photocell_X 0
+force photocell_Y 1
+run 2
 
-# Reset count
-force -freeze reset 0
-run
+-- Test scenario 3: Room is full (red light active)
+force photocell_X 1
+force photocell_Y 0
+run 2
 
-# Increment count after reset
-force -freeze photocell_in 2'b01
-run
-force -freeze photocell_in 2'b01
-run
+-- Test scenario 4: Reset the system
+force reset 0
+run 2
 
-# Decrement count after reset
-force -freeze photocell_in 2'b10
-run
+-- Test scenario 5: Increment occupancy
+force photocell_X 1
+force photocell_Y 0
+run 2
 
-# End of simulation
-quit -sim
+-- Test scenario 6: Decrement occupancy
+force photocell_X 0
+force photocell_Y 1
+run 2
+
+-- Test scenario 7: Room is full (red light active)
+force photocell_X 1
+force photocell_Y 0
+run 2
